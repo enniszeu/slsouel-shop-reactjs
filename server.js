@@ -1,0 +1,77 @@
+const express = require("express");
+const app = express();
+var port = process.env.PORT || 3000;
+var admin = require("firebase-admin");
+var bodyParser = require('body-parser');
+
+
+//conect firebase
+var serviceAccount = require("./serviceAccountKey.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://slsouel.firebaseio.com",
+  storageBucket: "https://slsouel.firebaseio.com"
+});
+var db = admin.database();
+
+//body [parse]
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+
+
+
+app.post("/create", (req, res)=>{
+
+	var post = {
+		products : req.body.products,
+	    species : req.body.species,
+	    describe : req.body.describe,
+	    date : req.body.date
+	}
+	db.ref('slsouel/').push(post)
+		.then(() => res.json('User add'))
+        .catch(err => res.status(400).json('Err: ' + err));
+	
+})
+
+app.get("/manager", (req, res)=>{
+	const products = []
+	db.ref('slsouel/').once('value', function(snapshot) {
+	  snapshot.forEach(function(childSnapshot) {
+
+	    var data ={
+	    	_id : childSnapshot.key,
+	    	post : childSnapshot.val()
+	    }
+	    products.push(data)
+	  });
+	})
+	.then(() => res.json(products))
+    .catch(err => res.status(400).json('Err: ' + err));;
+
+	
+})
+
+app.get("/product", (req, res)=>{
+	const products = []
+	db.ref('slsouel/').once('value', function(snapshot) {
+	  snapshot.forEach(function(childSnapshot) {
+
+	    var data ={
+	    	_id : childSnapshot.key,
+	    	post : childSnapshot.val()
+	    }
+	    products.push(data)
+	  });
+	})
+	.then(() => res.json(products))
+    .catch(err => res.status(400).json('Err: ' + err));;
+	
+})
+
+
+
+app.listen(port, ()=>{
+	console.log(`helo tuan ${port}`)
+})
