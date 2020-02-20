@@ -3,7 +3,7 @@ const app = express();
 var port = process.env.PORT || 3000;
 var admin = require("firebase-admin");
 var bodyParser = require('body-parser');
-
+const cors = require("cors");
 
 //conect firebase
 var serviceAccount = require("./serviceAccountKey.json");
@@ -14,6 +14,14 @@ admin.initializeApp({
 });
 var db = admin.database();
 
+
+app.use(cors());
+
+app.get("/api/ping", (req, res) => {
+  res.send({
+    msg: "Hello, World"
+  });
+});
 
 //body [parse]
 app.use(bodyParser.json()); 
