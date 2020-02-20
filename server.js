@@ -38,10 +38,6 @@ app.post("/create", (req, res)=>{
 	
 })
 
-app.get('/create', (req, res) =>{
-
-	res.render('create');
-})
 
 app.get("/manager", (req, res)=>{
 	const products = []
