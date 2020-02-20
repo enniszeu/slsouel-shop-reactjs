@@ -14,6 +14,7 @@ admin.initializeApp({
 });
 var db = admin.database();
 
+
 //body [parse]
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true })); 
@@ -26,6 +27,7 @@ app.post("/create", (req, res)=>{
 
 	var post = {
 		products : req.body.products,
+		price: req.body.price,
 	    species : req.body.species,
 	    describe : req.body.describe,
 	    date : req.body.date
