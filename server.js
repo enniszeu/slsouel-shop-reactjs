@@ -36,8 +36,10 @@ app.post("/create", (req, res)=>{
 		price: req.body.price,
 	    species : req.body.species,
 	    describe : req.body.describe,
-	    date : req.body.date
+	    date : req.body.date,
+	    url : req.body.url
 	}
+
 	db.ref('slsouel/').push(post)
 		.then(() => res.json('User add'))
         .catch(err => res.status(400).json('Err: ' + err));
@@ -70,15 +72,19 @@ app.get("/product", (req, res)=>{
 
 	    var data ={
 	    	_id : childSnapshot.key,
-	    	post : childSnapshot.val()
+	    	data : childSnapshot.val()
 	    }
 	    products.push(data)
 	  });
 	})
-	.then(() => res.json(products))
+	.then(() =>  res.json(products))
     .catch(err => res.status(400).json('Err: ' + err));
+
+
 	
 })
+
+
 
 app.get('/product/:id', (req, res) =>{
 	var id = req.params.id;
