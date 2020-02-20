@@ -20,8 +20,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 
-app.set("view engine", "pug");
-app.set("views", "./views")
 
 app.post("/create", (req, res)=>{
 
