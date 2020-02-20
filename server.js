@@ -15,11 +15,12 @@ admin.initializeApp({
 var db = admin.database();
 
 //body [parse]
-var jsonParser = bodyParser.json()
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 
-
+app.set("view engine", "pug");
+app.set("views", "./views")
 
 app.post("/create", (req, res)=>{
 
@@ -33,6 +34,11 @@ app.post("/create", (req, res)=>{
 		.then(() => res.json('User add'))
         .catch(err => res.status(400).json('Err: ' + err));
 	
+})
+
+app.get('/create', (req, res) =>{
+
+	res.render('create');
 })
 
 app.get("/manager", (req, res)=>{
@@ -66,10 +72,27 @@ app.get("/product", (req, res)=>{
 	  });
 	})
 	.then(() => res.json(products))
-    .catch(err => res.status(400).json('Err: ' + err));;
+    .catch(err => res.status(400).json('Err: ' + err));
 	
 })
 
+app.get('/product/:id', (req, res) =>{
+	var id = req.params.id;
+	db.ref('slsouel/').child(id).once('value')
+		.then(function(snap){
+			res.json(data)
+		})
+		.catch(err => res.status(400).json('Err: ' + err));
+	})
+
+
+app.get('/delete/:id', (req, res) =>{
+	var id = req.params.id;
+	db.ref('slsouel/').child(id).remove()
+	.then(() => res.send("delete acess"))
+    .catch(err => res.status(400).json('Err: ' + err));
+	
+})
 
 
 app.listen(port, ()=>{
