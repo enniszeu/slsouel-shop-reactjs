@@ -44,9 +44,7 @@ app.post("/create" , (req, res)=>{
 		price: req.body.price,
 	    species : req.body.species,
 	    describe : req.body.describe,
-	    date : req.body.date,
-	    url : req.body.url,
-	    image1: req.body.imgeFile
+	    date : req.body.date
 	}
  
 	db.ref('slsouel/').push(post)
