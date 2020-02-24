@@ -17,6 +17,8 @@ var db = admin.database();
 var multer  = require('multer')
 var upload = multer({ dest: 'puclic/uploads/' });
 
+// app.set("view engine", "pug");
+// app.set("views", "./views")
 
 
 app.use(cors());
@@ -46,12 +48,16 @@ app.post("/create" , upload.single('imgeFile'), (req, res)=>{
 	    url : req.body.url,
 	    image1: req.body.imgeFile
 	}
-
+ 
 	db.ref('slsouel/').push(post)
 		.then(() => res.json('User add'))
         .catch(err => res.status(400).json('Err: ' + err));
 	
 })
+
+// app.get("/create", (req, res)=>{
+// 	res.render("create")
+// })
 
 
 app.get("/manager", (req, res)=>{
