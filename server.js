@@ -35,9 +35,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.post("/create" , upload.single('imgeFile'), (req, res)=>{
+app.post("/create" , upload.single('imgeFile'), (req, res, next)=>{
+	const file = req.file
 
-	req.body.imgeFile = "uploads/" + req.file.path
+	if(!file){
+		const error = new Error(" lpyfd")
+		error.httpStatusCode = 400
+		return next(error)
+	}
+
+	req.body.imgeFile = "uploads/" + file.path.split('puclic\\uploads\\').slice(1).join('/');
 
 	var post = {
 		products : req.body.products,
