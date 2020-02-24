@@ -4,6 +4,7 @@ var port = process.env.PORT || 3000;
 var admin = require("firebase-admin");
 var bodyParser = require('body-parser');
 const cors = require("cors");
+var multer  = require('multer')
 
 //conect firebase
 var serviceAccount = require("./serviceAccountKey.json");
@@ -13,6 +14,9 @@ admin.initializeApp({
   storageBucket: "https://slsouel.firebaseio.com"
 });
 var db = admin.database();
+
+
+var upload = multer({ dest: 'puclic/uploads/' });
 
 
 app.use(cors());
@@ -29,7 +33,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.post("/create", (req, res)=>{
+app.post("/create", upload.single('imgeFile'), (req, res)=>{
+
+	req.body.imgeFile = "uploads/" + req.file.path.split('puclic\\uploads\\').slice(1).join('/');
+
 
 	var post = {
 		products : req.body.products,
@@ -37,7 +44,7 @@ app.post("/create", (req, res)=>{
 	    species : req.body.species,
 	    describe : req.body.describe,
 	    date : req.body.date,
-	    url : req.body.url
+	    image: req.body.imgeFile
 	}
 
 	db.ref('slsouel/').push(post)
