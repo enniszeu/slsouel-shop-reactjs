@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/create" , upload.single('imgeFile'), (req, res)=>{
 
-	req.body.imgeFile = "uploads/" + req.file.path.split('puclic\\uploads\\').slice(1).join('/');
+	req.body.imgeFile = "uploads/" + req.file.path
 
 	var post = {
 		products : req.body.products,
