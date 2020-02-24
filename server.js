@@ -14,11 +14,6 @@ admin.initializeApp({
 });
 var db = admin.database();
 
-var multer  = require('multer')
-var upload = multer({ dest: 'puclic/uploads/' });
-
-// app.set("view engine", "pug");
-// app.set("views", "./views")
 
 
 app.use(cors());
@@ -35,16 +30,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.post("/create" , upload.single('imgeFile'), (req, res, next)=>{
-	const file = req.file
+app.post("/create" , (req, res)=>{
 
-	if(!file){
-		const error = new Error(" lpyfd")
-		error.httpStatusCode = 400
-		return next(error)
-	}
-
-	req.body.imgeFile = "uploads/" + file.path.split('puclic\\uploads\\').slice(1).join('/');
 
 	var post = {
 		products : req.body.products,
@@ -52,18 +39,14 @@ app.post("/create" , upload.single('imgeFile'), (req, res, next)=>{
 	    species : req.body.species,
 	    describe : req.body.describe,
 	    date : req.body.date,
-	    image1: req.body.imgeFile
+	    url : req.body.url
 	}
- 
+
 	db.ref('slsouel/').push(post)
 		.then(() => res.json('User add'))
         .catch(err => res.status(400).json('Err: ' + err));
 	
 })
-
-// app.get("/create", (req, res)=>{
-// 	res.render("create")
-// })
 
 
 app.get("/manager", (req, res)=>{
