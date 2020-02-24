@@ -18,6 +18,9 @@ var db = admin.database();
 
 var upload = multer({ dest: 'puclic/uploads/' });
 
+// app.set("view engine", "pug");
+// app.set("views", "./views")
+
 
 app.use(cors());
 
@@ -45,6 +48,7 @@ app.post("/create", upload.single('imgeFile'), (req, res)=>{
 	    describe : req.body.describe,
 	    date : req.body.date,
 	    image: req.body.imgeFile
+	    // url : req.body.url
 	}
 
 	db.ref('slsouel/').push(post)
@@ -52,6 +56,9 @@ app.post("/create", upload.single('imgeFile'), (req, res)=>{
         .catch(err => res.status(400).json('Err: ' + err));
 	
 })
+// app.get('/create', (req, res) =>{
+// 	res.render('create');
+// })
 
 
 app.get("/manager", (req, res)=>{
