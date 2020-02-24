@@ -14,8 +14,8 @@ admin.initializeApp({
 });
 var db = admin.database();
 
-// var multer  = require('multer')
-// var upload = multer({ dest: 'puclic/uploads/' });
+var multer  = require('multer')
+var upload = multer({ dest: 'puclic/uploads/' });
 
 // app.set("view engine", "pug");
 // app.set("views", "./views")
@@ -35,16 +35,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.post("/create" , (req, res)=>{
+app.post("/create" , upload.single('imgeFile'), (req, res)=>{
 
-
+	req.body.imgeFile = "uploads/" + req.file.path
 
 	var post = {
 		products : req.body.products,
 		price: req.body.price,
 	    species : req.body.species,
 	    describe : req.body.describe,
-	    date : req.body.date
+	    date : req.body.date,
+	    image1: req.body.imgeFile
 	}
  
 	db.ref('slsouel/').push(post)
