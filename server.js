@@ -14,6 +14,10 @@ admin.initializeApp({
 });
 var db = admin.database();
 
+var multer  = require('multer')
+var upload = multer({ dest: 'puclic/uploads/' });
+
+
 
 app.use(cors());
 
@@ -29,7 +33,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.post("/create", (req, res)=>{
+app.post("/create" , upload.single('imgeFile'), (req, res)=>{
+
+	req.body.imgeFile = "uploads/" + req.file.path.split('puclic\\uploads\\').slice(1).join('/');
 
 	var post = {
 		products : req.body.products,
@@ -37,7 +43,8 @@ app.post("/create", (req, res)=>{
 	    species : req.body.species,
 	    describe : req.body.describe,
 	    date : req.body.date,
-	    url : req.body.url
+	    url : req.body.url,
+	    image1: req.body.imgeFile
 	}
 
 	db.ref('slsouel/').push(post)
