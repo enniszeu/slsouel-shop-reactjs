@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res)=>{
 	var page = parseInt(req.query.page) || 1;
-    var perPage = 9;
+    var perPage = 5;
 
     var start = (page - 1) * perPage;
     var end = page * perPage;
@@ -46,7 +46,7 @@ app.get("/", (req, res)=>{
 	    products.push(data)
 	  });
 	})
-	.then(() => res.json(products).slice(start, end))
+	.then(() => res.json((products).slice(start, end)))
     .catch(err => res.status(400).json('Err: ' + err));;
 
 	
