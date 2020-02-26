@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res)=>{
 	var page = parseInt(req.query.page) || 1;
-    var perPage = 5;
+    var perPage = 9;
 
     var start = (page - 1) * perPage;
     var end = page * perPage;
