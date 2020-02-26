@@ -28,7 +28,29 @@ app.get("/api/ping", (req, res) => {
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
+app.get("/", (req, res)=>{
+	var page = parseInt(req.query.page) || 1;
+    var perPage = 9;
 
+    var start = (page - 1) * perPage;
+    var end = page * perPage;
+    
+	const products = []
+	db.ref('slsouel/').once('value', function(snapshot) {
+	  snapshot.forEach(function(childSnapshot) {
+
+	    var data ={
+	    	_id : childSnapshot.key,
+	    	post : childSnapshot.val()
+	    }
+	    products.push(data)
+	  });
+	})
+	.then(() => res.json(products).slice(start, end))
+    .catch(err => res.status(400).json('Err: ' + err));;
+
+	
+})
 
 app.post("/create" , (req, res)=>{
 
