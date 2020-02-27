@@ -114,7 +114,7 @@ app.get('/product/:id', (req, res) =>{
 	var id = req.params.id;
 	db.ref('slsouel/').child(id).once('value')
 		.then(function(snap){
-			res.json(data)
+			res.json(snap.val())
 		})
 		.catch(err => res.status(400).json('Err: ' + err));
 	})
