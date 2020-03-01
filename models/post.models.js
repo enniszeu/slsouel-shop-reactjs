@@ -2,14 +2,12 @@ var mongoose = require('mongoose');
 
 
 var postSchema = new mongoose.Schema({
-	name : String,
-	conten: String,
-	imgeFile: String,
-	email:String,
-	password:String,
-	url:String,
-	textAria:String, 
-	imageName:String,
+	products : String,
+	imageName: String,
+	price: String,
+	species:String,
+	describe:String,
+	describe:String,
 	date:String
 });
 

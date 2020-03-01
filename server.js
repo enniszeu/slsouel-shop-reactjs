@@ -6,13 +6,17 @@ const Post = require('./models/post.models');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 var cors = require('cors');
+const multer = require("multer");
 
 const uri = process.env.MONGO_URL
 mongoose.connect("mongodb+srv://enniszeu:01695419337@cluster0-amfrk.mongodb.net/enniszeu?retryWrites=true&w=majority" ,{useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
 
 
 app.use(express.static('puclic'));
-app.use(cors())
+app.use(cors());
+
+
+var upload = multer({ dest: 'puclic/uploads/' });
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
@@ -42,17 +46,19 @@ app.get('/manager', async function(req, res){
 //create
 
 
-app.post('/create', function(req, res){
-    
-    const name = req.body.name;
-    const imgeFile = req.body.imgeFile;
-    const conten = req.body.conten;
-    const textAria = req.body.textAria;
-    const date = req.body.date;
-    const url = req.body.url;
-    const imageName = req.body.imageName;
+app.post('/create', upload.single('imgeFile'), function(req, res){
 
-    const newUser = new Post({name,conten,date,textAria,url,imageName})
+    req.body.imgeFile = req.file.path.split('/').slice(1).join('/');
+    
+    const products = req.body.products;
+    const imgeFile = req.body.imgeFile;
+    const price = req.body.price;
+    const species = req.body.species;
+    const describe = req.body.describe;
+    const date = req.body.date;
+
+
+    const newUser = new Post({products,imageName,price,species,describe,date})
 
     newUser.save()
         .then(() => res.json('User add'))
