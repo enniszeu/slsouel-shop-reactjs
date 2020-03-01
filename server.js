@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 var cors = require('cors');
 const multer = require("multer");
+const pug = require("pug");
 
 const uri = process.env.MONGO_URL
 mongoose.connect("mongodb+srv://enniszeu:01695419337@cluster0-amfrk.mongodb.net/enniszeu?retryWrites=true&w=majority" ,{useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
@@ -15,6 +16,8 @@ mongoose.connect("mongodb+srv://enniszeu:01695419337@cluster0-amfrk.mongodb.net/
 app.use(express.static('puclic'));
 app.use(cors());
 
+// app.set('view engine', 'pug');
+// app.set('views', './views');
 
 var upload = multer({ dest: 'puclic/uploads/' });
 
@@ -26,6 +29,10 @@ app.get("/api/ping", (req, res) => {
     msg: "Hello, World"
   });
 });
+
+// app.get('/create', function(req, res){
+//      res.render('create')
+// })
 
 app.get('/', function(req, res){
     var page = parseInt(req.query.page) || 1;
@@ -42,7 +49,7 @@ app.get('/', function(req, res){
 
 
 //home post
-app.get('/manager', async function(req, res){
+app.get('/manager', function(req, res){
     Post.find()
         .then(posts => res.json(posts))
         .catch(err => res.status(400).json('Err :' + err))
@@ -52,9 +59,17 @@ app.get('/manager', async function(req, res){
 //create
 
 
-app.post('/create', upload.single('imgeFile'), function(req, res){
+app.post('/create',upload.single('imgeFile'), function(req, res){
 
-    req.body.imgeFile = req.file.path.split('/').slice(1).join('/');
+    var split = '\\';
+    var imgName = req.file.path.split(split);
+
+    if(imgName[0] == 'undefined'){
+        split = '/';
+        imgName = req.file.path.split(split);
+    }
+
+    req.body.imgeFile = imgName.slice(1).join(split);
     
     const products = req.body.products;
     const imgeFile = req.body.imgeFile;
@@ -64,7 +79,18 @@ app.post('/create', upload.single('imgeFile'), function(req, res){
     const date = req.body.date;
 
 
-    const newUser = new Post({products,imageName,price,species,describe,date})
+    console.log('products: ' + products)
+    console.log('imgeFile: ' + imgeFile)
+    console.log('price: ' + price)
+    console.log('species: ' + species)
+    console.log('describe: ' + describe)
+    console.log('date: ' + date)
+    //muốn log cái này khi gửi request thì làm sao
+    //res undefind
+
+ 
+
+    const newUser = new Post({products,species,imgeFile,price,describe,date})
 
     newUser.save()
         .then(() => res.json('User add'))
