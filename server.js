@@ -21,6 +21,12 @@ var upload = multer({ dest: 'puclic/uploads/' });
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
+app.get("/api/ping", (req, res) => {
+  res.send({
+    msg: "Hello, World"
+  });
+});
+
 app.get('/', function(req, res){
     var page = parseInt(req.query.page) || 1;
     var perPage = 3;
