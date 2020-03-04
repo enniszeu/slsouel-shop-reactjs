@@ -1,38 +1,35 @@
+
 const express = require("express");
 const app = express();
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 4000;
 const mongoose = require('mongoose');
 const Post = require('./models/post.models');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-var cors = require('cors');
 const multer = require("multer");
-const pug = require("pug");
+var cors = require('cors');
 
 const uri = process.env.MONGO_URL
 mongoose.connect("mongodb+srv://enniszeu:01695419337@cluster0-amfrk.mongodb.net/enniszeu?retryWrites=true&w=majority" ,{useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
 
 
-app.use(express.static('puclic'));
-app.use(cors());
 
-// app.set('view engine', 'pug');
-// app.set('views', './views');
+var storage = multer.diskStorage({
+      destination: function (req, imgeFile, cb) {
+      cb(null, 'client/public/uploads/')
+    },
+    filename: function (req, imgeFile, cb) {
+      cb(null, Date.now() + '-' +imgeFile.originalname )
+    }
+})
+var upload = multer({ storage: storage }).single('imgeFile')
 
-var upload = multer({ dest: 'puclic/uploads/' });
+
+app.use(express.static('./client'));
+app.use(cors())
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-
-app.get("/api/ping", (req, res) => {
-  res.send({
-    msg: "Hello, World"
-  });
-});
-
-// app.get('/create', function(req, res){
-//      res.render('create')
-// })
 
 app.get('/', function(req, res){
     var page = parseInt(req.query.page) || 1;
@@ -49,7 +46,7 @@ app.get('/', function(req, res){
 
 
 //home post
-app.get('/manager', function(req, res){
+app.get('/manager', async function(req, res){
     Post.find()
         .then(posts => res.json(posts))
         .catch(err => res.status(400).json('Err :' + err))
@@ -59,18 +56,12 @@ app.get('/manager', function(req, res){
 //create
 
 
-app.post('/create',upload.single('imgeFile'), function(req, res){
-
-    var split = '\\';
-    var imgName = req.file.path.split(split);
-
-    if(imgName[0] == 'undefined'){
-        split = '/';
-        imgName = req.file.path.split(split);
-    }
-
-    req.body.imgeFile = imgName.slice(1).join(split);
+app.post('/create',upload, function(req, res){
     
+
+    req.body.imgeFile = "uploads/" + req.file.path.split('client\\public\\uploads\\').slice(1).join('/');
+    
+
     const products = req.body.products;
     const imgeFile = req.body.imgeFile;
     const price = req.body.price;
@@ -78,25 +69,16 @@ app.post('/create',upload.single('imgeFile'), function(req, res){
     const describe = req.body.describe;
     const date = req.body.date;
 
-
-    console.log('products: ' + products)
-    console.log('imgeFile: ' + imgeFile)
-    console.log('price: ' + price)
-    console.log('species: ' + species)
-    console.log('describe: ' + describe)
-    console.log('date: ' + date)
-    //muốn log cái này khi gửi request thì làm sao
-    //res undefind
-
- 
-
     const newUser = new Post({products,species,imgeFile,price,describe,date})
-
+    console.log(newUser)
     newUser.save()
         .then(() => res.json('User add'))
         .catch(err => res.status(400).json('Err: ' + err));
 
-});
+    })
+
+
+
 
 app.get('/post/:id', function(req, res){
     Post.findById(req.params.id)
