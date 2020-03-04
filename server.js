@@ -14,15 +14,16 @@ mongoose.connect("mongodb+srv://enniszeu:01695419337@cluster0-amfrk.mongodb.net/
 
 
 
-var storage = multer.diskStorage({
-      destination: function (req, imgeFile, cb) {
-      cb(null, 'client/public/uploads/')
-    },
-    filename: function (req, imgeFile, cb) {
-      cb(null, Date.now() + '-' +imgeFile.originalname )
-    }
-})
-var upload = multer({ storage: storage }).single('imgeFile')
+// var storage = multer.diskStorage({
+//       destination: function (req, imgeFile, cb) {
+//       cb(null, 'client/public/uploads/')
+//     },
+//     filename: function (req, imgeFile, cb) {
+//       cb(null, Date.now() + '-' +imgeFile.originalname )
+//     }
+// })
+// var upload = multer({ storage: storage }).single('imgeFile')
+var upload = multer({ dest: 'client/public/uploads/' }).single('imgeFile')
 
 
 app.use(express.static('./client'));
