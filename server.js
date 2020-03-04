@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const Post = require('./models/post.models');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const multer = require("multer");
 var cors = require('cors');
 
 const uri = process.env.MONGO_URL
@@ -14,19 +13,8 @@ mongoose.connect("mongodb+srv://enniszeu:01695419337@cluster0-amfrk.mongodb.net/
 
 
 
-var storage = multer.diskStorage({
-      destination: function (req, imgeFile, cb) {
-      cb(null, 'client/public/uploads/')
-    },
-    filename: function (req, imgeFile, cb) {
-      cb(null, Date.now() + '-' +imgeFile.originalname )
-    }
-})
-var upload = multer({ storage: storage }).single('imgeFile')
-// var upload = multer({ dest: 'puclic/uploads/' }).single('imgeFile')
 
-
-app.use(express.static('./client'));
+app.use(express.static('puclic'));
 app.use(cors())
 
 app.use(express.json()) // for parsing application/json
@@ -57,10 +45,8 @@ app.get('/manager', async function(req, res){
 //create
 
 
-app.post('/create',upload, function(req, res){
+app.post('/create', function(req, res){
     
-
-    req.body.imgeFile =req.file.path;
     
 
     const products = req.body.products;
