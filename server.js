@@ -16,7 +16,7 @@ mongoose.connect("mongodb+srv://enniszeu:01695419337@cluster0-amfrk.mongodb.net/
 
 var storage = multer.diskStorage({
       destination: function (req, imgeFile, cb) {
-      cb(null, 'client/public/js/uploads')
+      cb(null, 'client/public/uploads/')
     },
     filename: function (req, imgeFile, cb) {
       cb(null, Date.now() + '-' +imgeFile.originalname )
