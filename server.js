@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 
 app.get('/', function(req, res){
     var page = parseInt(req.query.page) || 1;
-    var perPage = 3;
+    var perPage = 9;
 
     var start = (page - 1) * perPage;
     var end = page * perPage;
