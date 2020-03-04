@@ -17,7 +17,7 @@ mongoose.connect("mongodb+srv://enniszeu:01695419337@cluster0-amfrk.mongodb.net/
 app.use(express.static('puclic'));
 app.use(cors())
 
-app.use(express.json()) // for parsing application/json
+app.use(bodyParser.json({limit: '10000kb'})); // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 app.get('/', function(req, res){
