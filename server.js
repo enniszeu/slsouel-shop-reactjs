@@ -60,7 +60,7 @@ app.get('/manager', async function(req, res){
 app.post('/create',upload, function(req, res){
     
 
-    req.body.imgeFile = "uploads/" + req.file.path.split('client\\public\\uploads\\').slice(1).join('/');
+    req.body.imgeFile =req.file.path;
     
 
     const products = req.body.products;
