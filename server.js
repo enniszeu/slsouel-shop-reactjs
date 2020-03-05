@@ -12,8 +12,6 @@ const uri = process.env.MONGO_URL
 mongoose.connect("mongodb+srv://enniszeu:01695419337@cluster0-amfrk.mongodb.net/enniszeu?retryWrites=true&w=majority" ,{useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
 
 
-
-
 app.use(express.static('puclic'));
 app.use(cors())
 
@@ -54,7 +52,7 @@ app.post('/create', function(req, res){
     const price = req.body.price;
     const species = req.body.species;
     const describe = req.body.describe;
-    const date = req.body.date;
+    const date = (req.body.date).slice(0,25);
 
     const newUser = new Post({products,species,imgeFile,price,describe,date})
     console.log(newUser)
@@ -65,7 +63,7 @@ app.post('/create', function(req, res){
     })
 
 
-
+  
 
 app.get('/product/:id', function(req, res){
     Post.findById(req.params.id)
