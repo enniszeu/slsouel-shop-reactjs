@@ -67,7 +67,7 @@ app.post('/create', function(req, res){
 
 
 
-app.get('/post/:id', function(req, res){
+app.get('/product/:id', function(req, res){
     Post.findById(req.params.id)
         .then(posts => res.json(posts))
         .catch(err => res.status(400).json('Err :' + err))
