@@ -53,8 +53,17 @@ app.post('/create', function(req, res){
     const species = req.body.species;
     const describe = req.body.describe;
     const date = (req.body.date).slice(0,25);
+    const color1 = req.body.color1;
+    const color2 = req.body.color2;
+    const color3 = req.body.color3;
+    const color4 = req.body.color4;
+    const color5 = req.body.color5;
+    const image1 = req.body.image1;
+    const image2 = req.body.image2;
+    const image3 = req.body.image3;
+    const image4 = req.body.image4;
 
-    const newUser = new Post({products,species,imgeFile,price,describe,date})
+    const newUser = new Post({products,species,imgeFile,price,describe,date,color1, color2, color3, color4, color5, image1, image2, image3, image4})
     console.log(newUser)
     newUser.save()
         .then(() => res.json('User add'))
