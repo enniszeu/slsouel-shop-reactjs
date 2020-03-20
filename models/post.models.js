@@ -6,6 +6,7 @@ var postSchema = new mongoose.Schema({
 	imgeFile: String,
 	price: String,
 	species:String,
+	kho:String,
 	describe:String,
 	describe:String,
 	date:String,

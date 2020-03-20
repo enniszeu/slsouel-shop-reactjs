@@ -44,13 +44,12 @@ app.get('/manager', async function(req, res){
 
 
 app.post('/create', function(req, res){
-    
-    
-
+        
     const products = req.body.products;
     const imgeFile = req.body.imgeFile;
     const price = req.body.price;
     const species = req.body.species;
+    const kho = req.body.kho;
     const describe = req.body.describe;
     const date = (req.body.date).slice(0,25);
     const color1 = req.body.color1;
@@ -63,7 +62,7 @@ app.post('/create', function(req, res){
     const image3 = req.body.image3;
     const image4 = req.body.image4;
 
-    const newUser = new Post({products,species,imgeFile,price,describe,date,color1, color2, color3, color4, color5, image1, image2, image3, image4})
+    const newUser = new Post({products,species, kho,imgeFile,price,describe,date,color1, color2, color3, color4, color5, image1, image2, image3, image4})
     console.log(newUser)
     newUser.save()
         .then(() => res.json('User add'))
