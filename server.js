@@ -7,6 +7,21 @@ const Post = require('./models/post.models');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 var cors = require('cors');
+const path = require("path");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+   destination: "./puclic/uploads/",
+   filename: function(req, file, cb){
+      cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
+   }
+});
+
+const upload = multer({
+   storage: storage,
+   limits:{fileSize: 1000000},
+}).single("imgeFile");
+
 
 const uri = process.env.MONGO_URL
 mongoose.connect("mongodb+srv://enniszeu:01695419337@cluster0-amfrk.mongodb.net/enniszeu?retryWrites=true&w=majority" ,{useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
@@ -43,26 +58,19 @@ app.get('/manager', async function(req, res){
 //create
 
 
-app.post('/create', function(req, res){
+app.post('/create',upload, function(req, res, next){
         
     const products = req.body.products;
-    const imgeFile = req.body.imgeFile;
+    const imgeFile = req.body.imgeFile ="/" + req.file.path.split('\\').slice(1).join('/');
     const price = req.body.price;
     const species = req.body.species;
     const kho = req.body.kho;
     const describe = req.body.describe;
     const date = (req.body.date).slice(0,25);
-    const color1 = req.body.color1;
-    const color2 = req.body.color2;
-    const color3 = req.body.color3;
-    const color4 = req.body.color4;
-    const color5 = req.body.color5;
-    const image1 = req.body.image1;
-    const image2 = req.body.image2;
-    const image3 = req.body.image3;
-    const image4 = req.body.image4;
 
-    const newUser = new Post({products,species, kho,imgeFile,price,describe,date,color1, color2, color3, color4, color5, image1, image2, image3, image4})
+    console.log(imgeFile)
+
+    const newUser = new Post({products,species, kho,imgeFile,price,describe,date})
     console.log(newUser)
     newUser.save()
         .then(() => res.json('User add'))
