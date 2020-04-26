@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var postSchema = new mongoose.Schema({
 	products : String,
 	imgeFile: String,
+	imgeFile1: String,
 	price: String,
 	species:String,
 	kho:String,

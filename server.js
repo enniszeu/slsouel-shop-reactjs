@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 const upload = multer({
    storage: storage,
    limits:{fileSize: 1000000},
-}).single("imgeFile");
+});
 
 
 const uri = process.env.MONGO_URL
@@ -58,7 +58,7 @@ app.get('/manager', async function(req, res){
 //create
 
 
-app.post('/create',upload, function(req, res, next){
+app.post('/create',upload.single("imgeFile"), function(req, res, next){
         
     const products = req.body.products;
     const imgeFile = req.body.imgeFile ="/" + req.file.path.split('\\').slice(1).join('/');
@@ -76,6 +76,21 @@ app.post('/create',upload, function(req, res, next){
         .then(() => res.json('User add'))
         .catch(err => res.status(400).json('Err: ' + err));
 
+    })
+
+
+app.post('/create/addimg',upload.single("imgeFile1"), function(req, res, next){
+        
+    const imgeFile1 = req.body.imgeFile1 ="/" + req.file.path.split('\\').slice(1).join('/');
+    const products = req.body.products;
+
+    console.log(products)
+
+    const newUser = new Post({imgeFile1, products})
+    console.log(newUser)
+    newUser.save()
+        .then(() => res.json('User add'))
+        .catch(err => res.status(400).json('Err: ' + err));
     })
 
 
